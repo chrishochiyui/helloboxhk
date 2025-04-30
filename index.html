@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>多件 HelloBox 下單</title>
+</head>
+<body>
+  <h2>訂購 HelloBox</h2>
+
+  <div id="productList"></div>
+  <button onclick="addProduct()">➕ 增加一件產品</button>
+  <br><br>
+  <button onclick="checkout()">下一步：跳去 WhatsApp</button>
+
+  <script>
+    const cloudName = "helloboxhk";
+    const uploadPreset = "hellobox_unsigned";
+    const productList = document.getElementById("productList");
+    let productIndex = 0;
+
+    function addProduct() {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <h4>產品 ${productIndex + 1}</h4>
+        <label>相片：</label><input type="file" class="photo"><br>
+        <label>YouTube 連結：</label><input type="url" class="youtube"><br><br>
+      `;
+      productList.appendChild(div);
+      productIndex++;
+    }
+
+    async function uploadImage(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      return data.secure_url;
+    }
+
+    async function checkout() {
+      const orderRef = "HB-" + new Date().getTime();
+      const photoInputs = document.querySelectorAll(".photo");
+      const youtubeInputs = document.querySelectorAll(".youtube");
+
+      let message = `Hello 👋 我想訂購 HelloBox\n訂單編號：${orderRef}\n`;
+
+      for (let i = 0; i < photoInputs.length; i++) {
+        const file = photoInputs[i].files[0];
+        const youtube = youtubeInputs[i].value || "(未填)";
+
+        if (!file) {
+          alert(`第 ${i + 1} 件產品：請選相片`);
+          return;
+        }
+
+        const imageUrl = await uploadImage(file);
+        message += `\n🧸 產品 ${i + 1}：\n🖼 相片：${imageUrl}\n🎵 YouTube：${youtube}\n`;
+      }
+
+      const encoded = encodeURIComponent(message);
+      window.location.href = `https://wa.me/85263783481?text=${encoded}`;
+    }
+
+    // 預設先加一件
+    addProduct();
+  </script>
+</body>
+</html>
