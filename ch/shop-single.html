@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hellobox HK</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"
+    />
+    <link rel="stylesheet" href="fonts/icomoon/style.css" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
+    <link rel="stylesheet" href="css/jquery-ui.css" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+
+    <link rel="stylesheet" href="css/aos.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="site-wrap">
+      <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+          <div class="container">
+            <div class="row align-items-center">
+              <div
+                class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left"
+              >
+                <form action="" class="site-block-top-search">
+                  <!-- <span class="icon icon-search2"></span>
+                <input type="text" class="form-control border-0" placeholder="Search"> -->
+                </form>
+              </div>
+
+              <div
+                class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center"
+              >
+                <div class="site-logo">
+                  <a href="index.html" class="js-logo-clone">HELLOBOX HK</a>
+                </div>
+              </div>
+
+              <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                <div class="site-top-icons">
+                  <ul>
+                    <!-- <li>
+                      <a href="#"><span class="icon icon-person"></span></a>
+                    </li>
+                    <li>
+                      <a href="#"><span class="icon icon-heart-o"></span></a>
+                    </li> -->
+                    <li>
+                      <a href="cart.html" class="site-cart">
+                        <span class="icon icon-shopping_cart"></span>
+                        <span class="count">2</span>
+                      </a>
+                    </li>
+                    <li class="d-inline-block d-md-none ml-md-0">
+                      <a href="#" class="site-menu-toggle js-menu-toggle"
+                        ><span class="icon-menu"></span
+                      ></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <nav
+          class="site-navigation text-right text-md-center"
+          role="navigation"
+        >
+          <div class="container">
+            <ul class="site-menu js-clone-nav d-none d-md-block">
+              <li class="">
+                <a href="index.html">Home</a>
+                <!-- <ul class="dropdown">
+                  <li><a href="#">Menu One</a></li>
+                  <li><a href="#">Menu Two</a></li>
+                  <li><a href="#">Menu Three</a></li>
+                  <li class="has-children">
+                    <a href="#">Sub Menu</a>
+                    <ul class="dropdown">
+                      <li><a href="#">Menu One</a></li>
+                      <li><a href="#">Menu Two</a></li>
+                      <li><a href="#">Menu Three</a></li>
+                    </ul>
+                  </li>
+                </ul> -->
+              </li>
+              <li class="has-children">
+                <a href="about.html">About</a>
+                <!-- <ul class="dropdown">
+                  <li><a href="#">Menu One</a></li>
+                  <li><a href="#">Menu Two</a></li>
+                  <li><a href="#">Menu Three</a></li>
+                </ul> -->
+              </li>
+              <li class="active"><a href="shop.html">Shop</a></li>
+              <!-- <li><a href="#">Catalogue</a></li>
+              <li><a href="#">New Arrivals</a></li> -->
+              <!-- <li><a href="contact.html">Contact</a></li> -->
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <div class="bg-light py-3">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 mb-0">
+              <a href="index.html">Home</a> <span class="mx-2 mb-0">/</span>
+              <a href="shop.html">Shop</a> <span class="mx-2 mb-0">/</span>
+              <strong class="text-black" id="breadcrumb-product-name"></strong>
+              <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                  const id = getQueryParam("id");
+                  if (id && products[id]) {
+                    document.getElementById(
+                      "breadcrumb-product-name"
+                    ).textContent = products[id].title;
+                  } else {
+                    document.getElementById(
+                      "breadcrumb-product-name"
+                    ).textContent = "Product Not Found";
+                  }
+                });
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6" id="product-image-col">
+              <img id="product-image" src="" alt="" class="img-fluid" />
+            </div>
+            <div class="col-md-6">
+              <h2 class="text-black" id="product-title"></h2>
+              <p id="product-desc"></p>
+              <a
+                href="javascript:void(0);"
+                id="read-more-link"
+                style="display: none"
+                >Read more</a
+              >
+              <p class="mb-4" id="product-desc2"></p>
+              <p>
+                <strong class="text-primary h4" id="product-price"></strong>
+              </p>
+
+              <div class="mb-5">
+                <div class="input-group mb-3" style="max-width: 120px">
+                  <div class="input-group-prepend">
+                    <button
+                      class="btn btn-outline-primary js-btn-minus"
+                      type="button"
+                    >
+                      &minus;
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control text-center"
+                    value="1"
+                    placeholder=""
+                    aria-label="Example text with button addon"
+                    aria-describedby="button-addon1"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-primary js-btn-plus"
+                      type="button"
+                    >
+                      &plus;
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p>
+                <a href="cart.html" class="buy-now btn btn-sm btn-primary"
+                  >Add To Cart</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="site-footer border-top">
+        <div class="container">
+          <div class="row pt-5 mt-5 text-center">
+            <div class="col-md-12">
+              <p>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy;
+                <script
+                  data-cfasync="false"
+                  src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+                ></script>
+                <script>
+                  document.write(new Date().getFullYear());
+                </script>
+                All rights reserved | This template is made with
+                <i class="icon-heart" aria-hidden="true"></i> by
+                <a
+                  href="https://colorlib.com"
+                  target="_blank"
+                  class="text-primary"
+                  >Colorlib</a
+                >
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/aos.js"></script>
+
+    <script src="js/main.js"></script>
+    <script>
+      // Product data
+      const products = {
+        rainbow: {
+          title: "彩虹節拍 Rainbow's Beats",
+          desc: `
+色彩繽紛如彩虹，為你帶來歡樂節奏。<br>
+Bright like a rainbow, bringing cheerful beats to your day.<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+按鍵功能 <span title="Buttons">🔘</span> Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+靈感來自七彩彩虹，帶來童趣與活力<br>
+色彩跳脫，適合送給喜歡繽紛生活的人<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+色彩控、童心未泯嘅朋友<br>
+生日、派對、小朋友特別日子送禮<br>
+鍾意快樂 vibe 嘅你
+`,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/rainbow-page1.png",
+            "images/products/rainbow-page2.png",
+            "images/products/rainbow-page3.png",
+          ],
+        },
+        sakura: {
+          title: "櫻花風 Sakura Pop",
+          desc: `柔和粉調，盛開如春日櫻花。<br>
+Soft and pink like cherry blossoms in spring.<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+按鍵功能 <span title="Buttons">🔘</span> Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+以日本櫻花為靈感，結合粉嫩色調與簡約美感<br>
+充滿春天氣息，讓你感受每一刻溫柔氛圍<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+櫻花控、粉紅控<br>
+想送比女朋友 / 姊妹 / 太太的小心意<br>
+鍾意日系療癒風格嘅你`,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/sakura-page1.png",
+            "images/products/sakura-page2.png",
+            "images/products/sakura-page3.png",
+          ],
+        },
+        mono: {
+          title: "黑白經典 Mono Classic",
+          desc: `極簡風格，黑白對比的恆久經典。<br>
+Minimalist style with timeless black and white contrast.<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+🔘 按鍵功能 Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+黑白色塊設計，呼應復古收音機風格<br>
+經典簡約，百搭任何空間<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+喜歡黑白簡約風、設計感人士<br>
+送比男朋友、辦公室朋友、工程師最啱<br>
+追求型格又實用嘅你`,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/black-white-page1.png",
+            "images/products/black-white-page2.png",
+            "images/products/black-white-page3.png",
+          ],
+        },
+        bonjour: {
+          title: "法式問好 Bonjour Box",
+          desc: `
+優雅高貴，如巴黎人般的輕盈問候。<br>
+Elegant and chic, like a Parisian “Bonjour.”<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+按鍵功能 <span title="Buttons">🔘</span> Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+藍白紅三色手工拼砌，呼應法國國旗<br>
+背面強力磁石設計，隨時貼於雪櫃、金屬櫃<br>
+<br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+
+💬 適合送比：<br>
+喜歡旅行或法國文化嘅朋友<br>
+想送出窩心語音祝福嘅你<br>
+鐘意儲磁石精品、復古手作感設計嘅人
+  `,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/france-page1.png",
+            "images/products/france-page2.png",
+            "images/products/france-page3.png",
+          ],
+        },
+        urban: {
+          title: "城市灰 Urban Ash",
+          desc: `輕鬆都市灰，帶點冷靜又型格。<br>
+Chill city grey — calm, cool, and effortlessly stylish.<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+🔘 按鍵功能 Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+城市靜謐灰調，靈感來自高樓下的街角風景<br>
+打造慵懶、型格、低調的生活美學<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+都市生活人、辦公室族、極簡主義者<br>
+偏好冷色系又chill嘅你`,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/grey-page1.png",
+            "images/products/grey-page2.png",
+            "images/products/grey-page3.png",
+          ],
+        },
+        coffee: {
+          title: "咖啡鴛鴦奶茶 Coffee, Tea or ME?",
+          desc: `朦朧奶啡色，像夢入咖啡香裡慢慢沉醉。<br>
+Hazy latte tones — like drifting into a warm coffee-scented dream.<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+🔘 按鍵功能 Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+咖啡色層層堆疊，如拿鐵奶泡香氣繚繞<br>
+營造迷糊微醺的放空時刻<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+每日需要咖啡續命嘅人☕<br>
+喜歡 cozy、柔和色調嘅朋友<br>
+自我療癒 / 放鬆 vibe 必備`,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/coffee-page1.png",
+            "images/products/coffee-page2.png",
+            "images/products/coffee-page3.png",
+          ],
+        },
+        citrus: {
+          title: "柑橘盒 Citrus Box",
+          desc: `
+活力爆發，像橙汁炸開的運動快感。<br>
+Zesty energy — like a citrus burst on game day.<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+🔘 按鍵功能 Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+明亮柑橘色系，象徵動感與朝氣<br>
+靈感來自球場、陽光與運動飲料的能量感<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+運動員、運動迷、活力滿滿的朋友<br>
+鍾意 bright、陽光 vibe 嘅你
+`,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/citrus-page1.png",
+            "images/products/citrus-page2.png",
+            "images/products/citrus-page3.png",
+          ],
+        },
+        matcha: {
+          title: "抹茶薄荷 Matcha Mint",
+          desc: `
+抹茶遇上薄荷，像節日派對裡的清新驚喜。<br>
+Matcha meets mint — a refreshing surprise at every celebration.<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+🔘 按鍵功能 Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+抹茶綠與薄荷青的夢幻組合<br>
+適合聖誕、生日、佳節派對用來送上驚喜祝福<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+聖誕節/生日/中秋等節日送禮<br>
+偏好節日氣氛或清新風格嘅朋友
+`,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/matcha-page1.png",
+            "images/products/matcha-page2.png",
+            "images/products/matcha-page3.png",
+          ],
+        },
+        italy: {
+          title: "義想生活 Bella Vita",
+          desc: `
+義式浪漫風格，享受生活每一刻。<br>
+Italian-inspired charm to enjoy every moment of life.<br><br>
+✨ 特色功能 Features：<br>
+打印任何你喜歡的圖片<br>
+精選積木顏色，享受手工拼砌樂趣<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+🔘 按鍵功能 Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+靈感來自義大利的陽光、色彩、慢活哲學<br>
+傳遞一份 dolce vita 的愜意生活美學<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+熱愛意式文化、旅行或陽光 vibe 嘅人<br>
+希望過輕鬆生活、傳遞溫暖祝福嘅你
+`,
+          desc2: "",
+          price: 188,
+          images: [
+            "images/products/italy-page1.png",
+            "images/products/italy-page2.png",
+            "images/products/italy-page3.png",
+          ],
+        },
+        mystery: {
+          title: "神秘盲盒 Mystery HelloBox",
+          desc: `
+限時優惠登場，驚喜滿滿。<br>
+Special limited offer — full of surprises!<br><br>
+✨ 特色功能 Features：<br>
+隨機積木款式，開盒即驚喜<br>
+亦可打印任何你喜歡的圖片<br>
+內置MP3🎵 播放器，預載一首音樂<br>
+錄音功能🎤，隨時錄下你的心聲<br>
+自帶磁吸設計，隨時貼於金屬表面<br><br>
+🔘 按鍵功能 Buttons：<br>
+🟥 錄音鍵（長按開始 / 按一下結束）<br>
+🟨 播放鍵（播放音樂 / 錄音）<br>
+🟦 音量調節（循環音量1–5）<br><br>
+📦 設計靈感 Design Inspiration：<br>
+靈感來自盲盒文化，每次開盒都是新體驗<br>
+適合喜歡驚喜、收藏、送禮的你<br><br>
+📏 規格 Size：<br>
+體積：10cm x 10cm x 1.8cm<br>
+MP3播放器：16MB容量<br>
+Type-c 叉電線：20cm<br>
+電池：充電約1小時，播放約1.5-2小時<br><br>
+💬 適合送比：<br>
+喜歡驚喜、收藏、或想送特別禮物的朋友
+  `,
+          desc2: "",
+          price: 158,
+          images: [
+            "images/products/sale.jpg",
+            "images/products/sale-2.png",
+            "images/products/sale-3.png",
+          ],
+        },
+      };
+
+      // Get query parameter
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+
+      // Render product
+      function renderProduct(productId) {
+        const product = products[productId];
+        const qtyBlock = document.querySelector(".mb-5");
+        const addToCartBtn = document.querySelector(".buy-now");
+        const descElem = document.getElementById("product-desc");
+        const readMoreLink = document.getElementById("read-more-link");
+
+        if (!product) {
+          document.getElementById("product-title").textContent =
+            "Product Not Found";
+          descElem.textContent = "";
+          document.getElementById("product-price").textContent = "";
+          document.getElementById("product-image-col").innerHTML = "";
+          if (qtyBlock) qtyBlock.style.display = "none";
+          if (addToCartBtn) addToCartBtn.style.display = "none";
+          const col = document.querySelector(".col-md-6:nth-child(2)");
+          if (col) {
+            col.innerHTML = `
+              <h2 class="text-black" id="product-title">Product Not Found</h2>
+              <div class="text-center my-4">
+                <button class="btn btn-primary" onclick="window.history.back()">Back to Previous Page</button>
+              </div>
+            `;
+          }
+          if (readMoreLink) readMoreLink.style.display = "none";
+          return;
+        }
+
+        // Show quantity and add to cart if hidden
+        if (qtyBlock) qtyBlock.style.display = "";
+        if (addToCartBtn) addToCartBtn.style.display = "";
+
+        document.getElementById("product-title").textContent = product.title;
+        document.getElementById("product-desc2").textContent = product.desc2;
+        document.getElementById("product-price").textContent =
+          "$" + product.price;
+
+        // Read more effect
+        const maxLength = 80; // characters before "Read more" appears
+        if (product.desc.length > maxLength) {
+          const shortDesc = product.desc.slice(0, maxLength) + "...";
+          descElem.innerHTML = shortDesc;
+          readMoreLink.style.display = "inline";
+          let expanded = false;
+          readMoreLink.textContent = "Read more";
+          readMoreLink.onclick = function () {
+            if (!expanded) {
+              descElem.innerHTML = product.desc;
+              readMoreLink.textContent = "Show less";
+              expanded = true;
+            } else {
+              descElem.innerHTML = shortDesc;
+              readMoreLink.textContent = "Read more";
+              expanded = false;
+            }
+          };
+        } else {
+          descElem.innerHTML = product.desc;
+          if (readMoreLink) readMoreLink.style.display = "none";
+        }
+
+        let imgHtml = `
+      <div class="swiper product-swiper">
+        <div class="swiper-wrapper">
+          ${product.images
+            .map(
+              (img) =>
+                `<div class="swiper-slide"><img src="${img}" alt="${product.title}" class="img-fluid" /></div>`
+            )
+            .join("")}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    `;
+        document.getElementById("product-image-col").innerHTML = imgHtml;
+        if (window.Swiper) {
+          new Swiper(".product-swiper", {
+            loop: true,
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true,
+            },
+          });
+        }
+      }
+
+      // On page load
+      document.addEventListener("DOMContentLoaded", function () {
+        const id = getQueryParam("id");
+        renderProduct(id);
+      });
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <style>
+      .product-swiper .swiper-button-next,
+      .product-swiper .swiper-button-prev {
+        display: none !important;
+      }
+    </style>
+  </body>
+</html>
