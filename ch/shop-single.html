@@ -686,6 +686,82 @@ Type-c 叉電線：20cm<br>
         const id = getQueryParam("id");
         renderProduct(id);
       });
+
+      // Replace the Add to cart logic with the following:
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add event for Add to Cart button
+        const addToCartBtn = document.querySelector(".buy-now");
+        if (addToCartBtn) {
+          addToCartBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            // Get product id from URL
+            const id = getQueryParam("id");
+            const product = products[id];
+            if (!product) return;
+            // Get quantity
+            const qtyInput = document.querySelector(
+              '.input-group input[type="text"]'
+            );
+            let qty = parseInt(qtyInput ? qtyInput.value : "1", 10);
+            if (isNaN(qty) || qty < 1) qty = 1;
+
+            // Get cart from localStorage
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Calculate total quantity if these items are added
+            let totalQty = qty;
+            cart.forEach((item) => {
+              if (item.id === id) {
+                totalQty += 1; // each is now an individual item
+              } else {
+                totalQty += 1;
+              }
+            });
+            if (totalQty > 6) {
+              // Show error message
+              if (!document.getElementById("cart-error-msg")) {
+                const err = document.createElement("div");
+                err.id = "cart-error-msg";
+                err.className = "alert alert-danger mt-2";
+                err.textContent =
+                  "因應營運限制，每次最多只可提交6件商品。如有需要，請聯絡客服。不便之處，敬請原諒。";
+                addToCartBtn.parentNode.insertBefore(
+                  err,
+                  addToCartBtn.nextSibling
+                );
+              }
+              return;
+            } else {
+              // Remove error if exists
+              const err = document.getElementById("cart-error-msg");
+              if (err) err.remove();
+            }
+
+            // Add each item as an individual object with a unique identifier
+            for (let i = 0; i < qty; i++) {
+              const uniqueId = `${id}_${Date.now()}_${Math.random()
+                .toString(36)
+                .substr(2, 9)}`;
+              cart.push({
+                id: id,
+                uniqueId: uniqueId,
+                title: product.title,
+                price: product.price,
+                image: product.images[0],
+                extras: {},
+                qty: 1,
+              });
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            // Optional: show feedback
+            addToCartBtn.textContent = "Added!";
+            setTimeout(() => {
+              addToCartBtn.textContent = "Add To Cart";
+            }, 1000);
+          });
+        }
+      });
     </script>
     <link
       rel="stylesheet"
