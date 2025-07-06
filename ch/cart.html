@@ -83,47 +83,17 @@
       }
       #cropper-modal .modal-content {
         background: #fff;
-        padding: 20px;
+        padding: 0px;
         border-radius: 8px;
         max-width: 90vw;
         max-height: 90vh;
         text-align: center;
       }
       #cropper-modal img {
-        max-width: 70vw;
-        max-height: 70vh;
+        max-width: 60vw;
+        max-height: 60vh;
         display: block;
         margin: 0 auto;
-      }
-
-      /* Add or update this style in your <head> section */
-      #cropper-modal .cropper-bg {
-        margin: 0 !important;
-      }
-
-      #cropper-modal .cropper-container {
-        display: block;
-        margin: 0 !important;
-      }
-      /* Add or update this style in your <head> section */
-      /* #cropper-modal .cropper-crop-box {
-        width: 90% !important;
-        left: 5% !important;
-        right: 5% !important;
-        max-width: 90vw !important;
-      } */
-      .product-thumbnail img,
-      .cart-photo-preview-each img,
-      #cart-photo-preview-each img {
-        max-width: 48px !important;
-        max-height: 48px !important;
-        width: auto;
-        height: auto;
-        display: inline-block;
-      }
-      /* Add or update this style in your <head> section */
-      #cropper-modal .modal-content #cropper-image {
-        margin: 0 !important;
       }
     </style>
   </head>
@@ -453,6 +423,35 @@
             );
           if (totalElem) totalElem.textContent = `$${total}`;
         }
+
+        // Add this script after renderCart() and after any cart update logic
+
+        function updateCartCount() {
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          const countElem = document.querySelector(".site-cart .count");
+          if (countElem) {
+            if (cart.length > 0) {
+              countElem.textContent = cart.length;
+              countElem.style.display = "inline-block";
+            } else {
+              countElem.style.display = "none";
+            }
+          }
+        }
+
+        // Call updateCartCount after any cart change
+        document.addEventListener("DOMContentLoaded", function () {
+          updateCartCount();
+
+          // Example: also call after renderCart
+          const originalRenderCart = renderCart;
+          window.renderCart = function () {
+            originalRenderCart();
+            updateCartCount();
+          };
+
+          // If you update cart elsewhere, call updateCartCount() after localStorage.setItem("cart", ...)
+        });
 
         // Handle quantity change and remove
         document
