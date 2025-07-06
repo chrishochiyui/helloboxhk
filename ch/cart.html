@@ -68,6 +68,63 @@
         max-height: 48px;
         height: auto;
       }
+      /* Cropper.js styles */
+      #cropper-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        align-items: center;
+        justify-content: center;
+      }
+      #cropper-modal .modal-content {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 90vw;
+        max-height: 90vh;
+        text-align: center;
+      }
+      #cropper-modal img {
+        max-width: 70vw;
+        max-height: 70vh;
+        display: block;
+        margin: 0 auto;
+      }
+
+      /* Add or update this style in your <head> section */
+      #cropper-modal .cropper-bg {
+        margin: 0 !important;
+      }
+
+      #cropper-modal .cropper-container {
+        display: block;
+        margin: 0 !important;
+      }
+      /* Add or update this style in your <head> section */
+      /* #cropper-modal .cropper-crop-box {
+        width: 90% !important;
+        left: 5% !important;
+        right: 5% !important;
+        max-width: 90vw !important;
+      } */
+      .product-thumbnail img,
+      .cart-photo-preview-each img,
+      #cart-photo-preview-each img {
+        max-width: 48px !important;
+        max-height: 48px !important;
+        width: auto;
+        height: auto;
+        display: inline-block;
+      }
+      /* Add or update this style in your <head> section */
+      #cropper-modal .modal-content #cropper-image {
+        margin: 0 !important;
+      }
     </style>
   </head>
   <body>
@@ -304,6 +361,21 @@
       const cloudName = "helloboxhk";
       const uploadPreset = "hellobox_unsigned";
 
+      async function uploadImage(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", uploadPreset);
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const data = await res.json();
+        return data.secure_url;
+      }
+
       document.addEventListener("DOMContentLoaded", function () {
         function renderCart() {
           const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -348,7 +420,8 @@
                                 : ""
                             }
                           </span>
-                          <button class="btn btn-sm btn-outline-success mt-1 cart-upload-btn-each" data-idx="${idx}">上傳圖片</button>
+                          <br />
+                          <button class="btn btn-sm btn-outline-success mt-1 cart-upload-btn-each" data-idx="${idx}">調整及上傳圖片</button>
                         </td>
                       </tr>
                       <tr>
@@ -444,21 +517,6 @@
             }
           });
 
-        async function uploadImage(file) {
-          const formData = new FormData();
-          formData.append("file", file);
-          formData.append("upload_preset", uploadPreset);
-          const res = await fetch(
-            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-          const data = await res.json();
-          return data.secure_url;
-        }
-
         renderCart();
       });
 
@@ -496,6 +554,110 @@
           const encoded = encodeURIComponent(message);
           window.location.href = `https://wa.me/85263783481?text=${encoded}`;
         });
+    </script>
+    <!-- Add this in your <head> section for Cropper.js -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+      rel="stylesheet"
+    />
+    <div id="cropper-modal">
+      <div class="modal-content">
+        <h5>請裁剪圖片為正方形 (1:1)</h5>
+        <img id="cropper-image" src="" alt="Crop image" />
+        <div style="margin-top: 10px">
+          <button id="cropper-confirm" class="btn btn-primary">
+            確定裁剪並上傳
+          </button>
+          <button id="cropper-cancel" class="btn btn-secondary">取消</button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script>
+      let cropper = null;
+      let cropperFileInput = null;
+      let cropperIdx = null;
+
+      document
+        .getElementById("cart-table-body")
+        .addEventListener("change", function (e) {
+          if (e.target.classList.contains("cart-photo-each")) {
+            const idx = +e.target.getAttribute("data-idx");
+            const file = e.target.files[0];
+            if (file) {
+              cropperFileInput = e.target;
+              cropperIdx = idx;
+              const reader = new FileReader();
+              reader.onload = function (ev) {
+                document.getElementById("cropper-image").src = ev.target.result;
+                document.getElementById("cropper-modal").style.display = "flex";
+                if (cropper) cropper.destroy();
+                cropper = new Cropper(
+                  document.getElementById("cropper-image"),
+                  {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    movable: true,
+                    zoomable: true,
+                    rotatable: false,
+                    scalable: false,
+                    autoCropArea: 1,
+                  }
+                );
+              };
+              reader.readAsDataURL(file);
+            }
+          }
+        });
+
+      // Cancel cropper
+      document.getElementById("cropper-cancel").onclick = function () {
+        document.getElementById("cropper-modal").style.display = "none";
+        if (cropper) cropper.destroy();
+        cropper = null;
+        cropperFileInput.value = ""; // reset file input
+      };
+
+      // Confirm crop and upload
+      document.getElementById("cropper-confirm").onclick = async function () {
+        if (!cropper) return;
+        const canvas = cropper.getCroppedCanvas({ width: 800, height: 800 });
+        canvas.toBlob(
+          async function (blob) {
+            // Show preview
+            document.getElementById(
+              `cart-photo-preview-each-${cropperIdx}`
+            ).innerHTML = `<img src="${canvas.toDataURL()}" style="max-width:60px;max-height:60px;">`;
+            // Upload to Cloudinary
+            document.getElementById("cropper-modal").style.display = "none";
+            cropper.destroy();
+            cropper = null;
+
+            // Show uploading text on button
+            const uploadBtn = document.querySelector(
+              `.cart-upload-btn-each[data-idx="${cropperIdx}"]`
+            );
+            if (uploadBtn) uploadBtn.textContent = "上傳中...";
+
+            // Upload
+            const url = await uploadImage(blob);
+
+            // Save to cart object in localStorage
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart[cropperIdx].extras = cart[cropperIdx].extras || {};
+            cart[cropperIdx].extras.photoUrl = url;
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            // Show thumbnail preview
+            document.getElementById(
+              `cart-photo-preview-each-${cropperIdx}`
+            ).innerHTML = `<img src="${url}" style="max-width:60px;max-height:60px;">`;
+            if (uploadBtn) uploadBtn.textContent = "已上傳";
+          },
+          "image/jpeg",
+          0.92
+        );
+      };
     </script>
   </body>
 </html>

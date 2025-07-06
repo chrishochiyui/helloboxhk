@@ -59,9 +59,40 @@
                     <li>
                       <a href="cart.html" class="site-cart">
                         <span class="icon icon-shopping_cart"></span>
-                        <span class="count">2</span>
+                        <span
+                          class="count"
+                          id="cart-count"
+                          style="display: none"
+                          >0</span
+                        >
                       </a>
                     </li>
+                    <script>
+                      document.addEventListener(
+                        "DOMContentLoaded",
+                        function () {
+                          function updateCartCount() {
+                            const cart =
+                              JSON.parse(localStorage.getItem("cart")) || [];
+                            const countElem =
+                              document.getElementById("cart-count");
+                            if (countElem) {
+                              if (cart.length > 0) {
+                                countElem.textContent = cart.length;
+                                countElem.style.display = "";
+                              } else {
+                                countElem.style.display = "none";
+                              }
+                            }
+                          }
+                          updateCartCount();
+                          // Optionally, update on storage change (for multi-tab)
+                          window.addEventListener("storage", function (e) {
+                            if (e.key === "cart") updateCartCount();
+                          });
+                        }
+                      );
+                    </script>
                     <li class="d-inline-block d-md-none ml-md-0">
                       <a href="#" class="site-menu-toggle js-menu-toggle"
                         ><span class="icon-menu"></span
@@ -249,7 +280,7 @@ Bright like a rainbow, bringing cheerful beats to your day.<br><br>
 內置MP3🎵 播放器，預載一首音樂<br>
 錄音功能🎤，隨時錄下你的心聲<br>
 自帶磁吸設計，隨時貼於金屬表面<br><br>
-按鍵功能 <span title="Buttons">🔘</span> Buttons：<br>
+<span title="Buttons">🔘</span> 按鍵功能 Buttons：<br>
 🟥 錄音鍵（長按開始 / 按一下結束）<br>
 🟨 播放鍵（播放音樂 / 錄音）<br>
 🟦 音量調節（循環音量1–5）<br><br>
@@ -267,7 +298,7 @@ Type-c 叉電線：20cm<br>
 鍾意快樂 vibe 嘅你
 `,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/rainbow-page1.png",
             "images/products/rainbow-page2.png",
@@ -284,7 +315,7 @@ Soft and pink like cherry blossoms in spring.<br><br>
 內置MP3🎵 播放器，預載一首音樂<br>
 錄音功能🎤，隨時錄下你的心聲<br>
 自帶磁吸設計，隨時貼於金屬表面<br><br>
-按鍵功能 <span title="Buttons">🔘</span> Buttons：<br>
+<span title="Buttons">🔘</span> 按鍵功能 Buttons：<br>
 🟥 錄音鍵（長按開始 / 按一下結束）<br>
 🟨 播放鍵（播放音樂 / 錄音）<br>
 🟦 音量調節（循環音量1–5）<br><br>
@@ -301,7 +332,7 @@ Type-c 叉電線：20cm<br>
 想送比女朋友 / 姊妹 / 太太的小心意<br>
 鍾意日系療癒風格嘅你`,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/sakura-page1.png",
             "images/products/sakura-page2.png",
@@ -318,7 +349,7 @@ Minimalist style with timeless black and white contrast.<br><br>
 內置MP3🎵 播放器，預載一首音樂<br>
 錄音功能🎤，隨時錄下你的心聲<br>
 自帶磁吸設計，隨時貼於金屬表面<br><br>
-🔘 按鍵功能 Buttons：<br>
+<span title="Buttons">🔘</span> 按鍵功能 Buttons：<br>
 🟥 錄音鍵（長按開始 / 按一下結束）<br>
 🟨 播放鍵（播放音樂 / 錄音）<br>
 🟦 音量調節（循環音量1–5）<br><br>
@@ -335,7 +366,7 @@ Type-c 叉電線：20cm<br>
 送比男朋友、辦公室朋友、工程師最啱<br>
 追求型格又實用嘅你`,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/black-white-page1.png",
             "images/products/black-white-page2.png",
@@ -353,7 +384,7 @@ Elegant and chic, like a Parisian “Bonjour.”<br><br>
 內置MP3🎵 播放器，預載一首音樂<br>
 錄音功能🎤，隨時錄下你的心聲<br>
 自帶磁吸設計，隨時貼於金屬表面<br><br>
-按鍵功能 <span title="Buttons">🔘</span> Buttons：<br>
+<span title="Buttons">🔘</span> 按鍵功能 Buttons：<br>
 🟥 錄音鍵（長按開始 / 按一下結束）<br>
 🟨 播放鍵（播放音樂 / 錄音）<br>
 🟦 音量調節（循環音量1–5）<br><br>
@@ -373,7 +404,7 @@ Type-c 叉電線：20cm<br>
 鐘意儲磁石精品、復古手作感設計嘅人
   `,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/france-page1.png",
             "images/products/france-page2.png",
@@ -390,7 +421,7 @@ Chill city grey — calm, cool, and effortlessly stylish.<br><br>
 內置MP3🎵 播放器，預載一首音樂<br>
 錄音功能🎤，隨時錄下你的心聲<br>
 自帶磁吸設計，隨時貼於金屬表面<br><br>
-🔘 按鍵功能 Buttons：<br>
+<span title="Buttons">🔘</span> 按鍵功能 Buttons：<br>
 🟥 錄音鍵（長按開始 / 按一下結束）<br>
 🟨 播放鍵（播放音樂 / 錄音）<br>
 🟦 音量調節（循環音量1–5）<br><br>
@@ -406,7 +437,7 @@ Type-c 叉電線：20cm<br>
 都市生活人、辦公室族、極簡主義者<br>
 偏好冷色系又chill嘅你`,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/grey-page1.png",
             "images/products/grey-page2.png",
@@ -423,7 +454,7 @@ Hazy latte tones — like drifting into a warm coffee-scented dream.<br><br>
 內置MP3🎵 播放器，預載一首音樂<br>
 錄音功能🎤，隨時錄下你的心聲<br>
 自帶磁吸設計，隨時貼於金屬表面<br><br>
-🔘 按鍵功能 Buttons：<br>
+<span title="Buttons">🔘</span> 按鍵功能 Buttons：<br>
 🟥 錄音鍵（長按開始 / 按一下結束）<br>
 🟨 播放鍵（播放音樂 / 錄音）<br>
 🟦 音量調節（循環音量1–5）<br><br>
@@ -440,7 +471,7 @@ Type-c 叉電線：20cm<br>
 喜歡 cozy、柔和色調嘅朋友<br>
 自我療癒 / 放鬆 vibe 必備`,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/coffee-page1.png",
             "images/products/coffee-page2.png",
@@ -475,7 +506,7 @@ Type-c 叉電線：20cm<br>
 鍾意 bright、陽光 vibe 嘅你
 `,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/citrus-page1.png",
             "images/products/citrus-page2.png",
@@ -510,7 +541,7 @@ Type-c 叉電線：20cm<br>
 偏好節日氣氛或清新風格嘅朋友
 `,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/matcha-page1.png",
             "images/products/matcha-page2.png",
@@ -545,7 +576,7 @@ Type-c 叉電線：20cm<br>
 希望過輕鬆生活、傳遞溫暖祝福嘅你
 `,
           desc2: "",
-          price: 188,
+          price: 198,
           images: [
             "images/products/italy-page1.png",
             "images/products/italy-page2.png",
@@ -558,7 +589,7 @@ Type-c 叉電線：20cm<br>
 限時優惠登場，驚喜滿滿。<br>
 Special limited offer — full of surprises!<br><br>
 ✨ 特色功能 Features：<br>
-隨機積木款式，開盒即驚喜<br>
+隨機一款售賣中的積木款式，開盒即驚喜<br>
 亦可打印任何你喜歡的圖片<br>
 內置MP3🎵 播放器，預載一首音樂<br>
 錄音功能🎤，隨時錄下你的心聲<br>
@@ -579,10 +610,10 @@ Type-c 叉電線：20cm<br>
 喜歡驚喜、收藏、或想送特別禮物的朋友
   `,
           desc2: "",
-          price: 158,
+          price: 168,
           images: [
-            "images/products/sale.jpg",
-            "images/products/sale-2.png",
+            "images/products/mystery-page1.png",
+            // "images/products/sale-2.png",
             "images/products/sale-3.png",
           ],
         },
@@ -756,6 +787,12 @@ Type-c 叉電線：20cm<br>
             localStorage.setItem("cart", JSON.stringify(cart));
             // Optional: show feedback
             addToCartBtn.textContent = "Added!";
+            // Refresh cart count after adding
+            const countElem = document.getElementById("cart-count");
+            if (countElem) {
+              countElem.textContent = cart.length;
+              countElem.style.display = cart.length > 0 ? "" : "none";
+            }
             setTimeout(() => {
               addToCartBtn.textContent = "Add To Cart";
             }, 1000);
