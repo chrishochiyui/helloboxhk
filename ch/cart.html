@@ -95,6 +95,51 @@
         display: block;
         margin: 0 auto;
       }
+
+      #cart-table-body .cart-photo-preview-each,
+      #cart-table-body .cart-photo-preview-each img,
+      #cart-table-body [id^="cart-upload-label-"] {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: left;
+      }
+
+      #cart-table-body td {
+        text-align: left;
+      }
+
+      .product-thumbnail {
+        vertical-align: middle;
+        text-align: center !important;
+      }
+      .product-thumbnail img {
+        display: inline-block;
+        vertical-align: middle;
+        max-height: 48px;
+        height: auto;
+      }
+
+      /* Hide the file input's file description (filename) */
+      input[type="file"].cart-photo-each {
+        width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: transparent;
+      }
+
+      input[type="file"].cart-photo-each::-webkit-file-upload-button {
+        visibility: visible;
+      }
+
+      input[type="file"].cart-photo-each::file-selector-button {
+        visibility: visible;
+      }
+
+      input[type="file"].cart-photo-each::-ms-value {
+        display: none;
+        color: transparent;
+      }
     </style>
   </head>
   <body>
@@ -328,49 +373,49 @@
 
     <script src="js/main.js"></script>
     <script>
-            const cloudName = "helloboxhk";
-            const uploadPreset = "hellobox_unsigned";
+      const cloudName = "helloboxhk";
+      const uploadPreset = "hellobox_unsigned";
 
-            async function uploadImage(file) {
-              const formData = new FormData();
-              formData.append("file", file);
-              formData.append("upload_preset", uploadPreset);
-              const res = await fetch(
-                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-                {
-                  method: "POST",
-                  body: formData,
-                }
-              );
-              const data = await res.json();
-              return data.secure_url;
-            }
+      async function uploadImage(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", uploadPreset);
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const data = await res.json();
+        return data.secure_url;
+      }
 
-            document.addEventListener("DOMContentLoaded", function () {
-              function renderCart() {
-                const cart = JSON.parse(localStorage.getItem("cart")) || [];
-                const tbody = document.getElementById("cart-table-body");
-                let html = "";
-                let total = 0;
+      document.addEventListener("DOMContentLoaded", function () {
+        function renderCart() {
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          const tbody = document.getElementById("cart-table-body");
+          let html = "";
+          let total = 0;
 
-                if (cart.length === 0) {
-                  html = `<tr><td colspan="7" class="text-center">Your cart is empty.</td></tr>`;
-                } else {
-                  cart.forEach((item, idx) => {
-                    const itemTotal = item.price;
-                    total += itemTotal;
-                    const extras = item.extras || {};
-                    html += `
+          if (cart.length === 0) {
+            html = `<tr><td colspan="7" class="text-center">Your cart is empty.</td></tr>`;
+          } else {
+            cart.forEach((item, idx) => {
+              const itemTotal = item.price;
+              total += itemTotal;
+              const extras = item.extras || {};
+              html += `
                       <tr data-id="${item.id}">
                         <td class="product-thumbnail">
                           ${item.title} <br />
                           <img src="${item.image}" alt="${
-                      item.title
-                    }" class="img-fluid" style="max-width:70px;"/>
+                item.title
+              }" class="img-fluid" style="max-width:70px;"/>
                         </td>
                         <td>$${item.price}</td>
                         <td class="text-left">
-                          <a href="#" class="btn btn-primary btn-sm cart-remove" data-idx="${idx}">X</a>
+                            <a href="#" class="btn btn-secondary cart-remove" data-idx="${idx}">X</a>
                         </td>
                       </tr>
                       <tr class="cart-extra-row" data-parent-idx="${idx}">
@@ -380,9 +425,10 @@
                               <td style="width:120px; text-align:left;">Photo upload:</td>
                               <td>
                                 <input type="file" accept="image/*" class="cart-photo-each" data-idx="${idx}" />
+                                <br />
                                 <input type="hidden" class="cart-photo-url-each" data-idx="${idx}" value="${
-                      extras.photoUrl || ""
-                    }" />
+                extras.photoUrl || ""
+              }" />
                                 <span id="cart-photo-preview-each-${idx}">
                                   ${
                                     extras.photoUrl
@@ -391,15 +437,18 @@
                                   }
                                 </span>
                                 <br />
-                                <button class="btn btn-sm btn-outline-success mt-1 cart-upload-btn-each" data-idx="${idx}">調整及上傳圖片</button>
+                                <!-- Replace the upload button with a label span and give it an id for dynamic updates -->
+                                <span id="cart-upload-label-${idx}" class="text-muted" style="font-size: 0.95em;">${
+                extras.photoUrl ? "已上載" : ""
+              }</span>
                               </td>
                             </tr>
                             <tr>
                               <td style="text-align:left;">YouTube music link:</td>
                               <td>
                                 <input type="url" class="form-control cart-youtube-each" placeholder="YouTube 連結" data-idx="${idx}" value="${
-                      extras.youtube || ""
-                    }" />
+                extras.youtube || ""
+              }" />
                               </td>
                             </tr>
                             <tr>
@@ -412,159 +461,175 @@
                         </td>
                       </tr>
                     `;
-                  });
-                }
-                tbody.innerHTML = html;
-                // Update total
-                const totalElem = document
-                  .querySelector(".text-black.h4.text-uppercase")
-                  ?.parentElement?.nextElementSibling?.querySelector(
-                    "strong.text-black"
-                  );
-                if (totalElem) totalElem.textContent = `$${total}`;
-              }
-
-              // Add this script after renderCart() and after any cart update logic
-
-              function updateCartCount() {
-                const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-                const countElemById = document.getElementById("cart-count");
-                const countElem =
-                  countElemById || document.querySelector(".site-cart .count");
-
-                console.log("Cart count:", cart.length);
-                if (countElem) {
-                  if (cart.length > 0) {
-                    countElem.textContent = cart.length;
-                    countElem.style.display = "inline-block";
-                  } else {
-                    countElem.style.display = "none";
-                  }
-                }
-              }
-
-              // Add this after your updateCartCount() function
-
-              // Listen for localStorage changes (from other tabs/windows)
-              window.addEventListener("storage", function (e) {
-                if (e.key === "cart") {
-                  updateCartCount();
-                }
-              });
-
-              // Optionally, also update on focus (in case of changes in other tabs)
-              window.addEventListener("focus", function () {
-                updateCartCount();
-              });
-
-              // Handle quantity change and remove
-              document
-                .getElementById("cart-table-body")
-                .addEventListener("click", async function (e) {
-                  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                  if (e.target.classList.contains("cart-remove")) {
-                    e.preventDefault();
-                    const idx = +e.target.getAttribute("data-idx");
-                    // After removing an item
-                    cart.splice(idx, 1);
-                    localStorage.setItem("cart", JSON.stringify(cart));
-                    renderCart();
-                    updateCartCount(); // <-- Add this
-                  }
-                  if (e.target.classList.contains("cart-upload-btn-each")) {
-                    e.preventDefault();
-                    const idx = +e.target.getAttribute("data-idx");
-                    const fileInput = document.querySelector(
-                      `.cart-photo-each[data-idx="${idx}"]`
-                    );
-                    const photoUrlInput = document.querySelector(
-                      `.cart-photo-url-each[data-idx="${idx}"]`
-                    );
-                    if (fileInput && fileInput.files[0]) {
-                      e.target.textContent = "上傳中...";
-                      const url = await uploadImage(fileInput.files[0]);
-                      photoUrlInput.value = url;
-                      // After uploading a photo
-                      cart[idx].extras = cart[idx].extras || {};
-                      cart[idx].extras.photoUrl = url;
-                      localStorage.setItem("cart", JSON.stringify(cart));
-                      updateCartCount(); // <-- Add this
-                      document.getElementById(
-                        `cart-photo-preview-each-${idx}`
-                      ).innerHTML = `<img src="${url}" style="max-width:60px;max-height:60px;">`;
-                      e.target.textContent = "已上傳";
-                    } else {
-                      alert("請先選擇圖片");
-                    }
-                  }
-                });
-
-              document
-                .getElementById("cart-table-body")
-                .addEventListener("change", function (e) {
-                  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                  if (e.target.classList.contains("cart-photo-each")) {
-                    const idx = +e.target.getAttribute("data-idx");
-                    const file = e.target.files[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onload = function (ev) {
-                        document.getElementById(
-                          `cart-photo-preview-each-${idx}`
-                        ).innerHTML = `<img src="${ev.target.result}" style="max-width:60px;max-height:60px;">`;
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }
-                  if (e.target.classList.contains("cart-youtube-each")) {
-                    const idx = +e.target.getAttribute("data-idx");
-                    // After changing YouTube link
-                    cart[idx].extras = cart[idx].extras || {};
-                    cart[idx].extras.youtube = e.target.value;
-                    localStorage.setItem("cart", JSON.stringify(cart));
-                    updateCartCount(); // <-- Add this
-                  }
-                });
-
-              renderCart();
-      a        updateCartCount(); // <-- This ensures the cart count is correct on page load
             });
+          }
+          tbody.innerHTML = html;
+          // Update total
+          const totalElem = document
+            .querySelector(".text-black.h4.text-uppercase")
+            ?.parentElement?.nextElementSibling?.querySelector(
+              "strong.text-black"
+            );
+          if (totalElem) totalElem.textContent = `$${total}`;
+        }
 
-            document
-              .querySelector(".btn.btn-primary.btn-lg.py-3.btn-block")
-              .addEventListener("click", async function (e) {
-                e.preventDefault();
+        // Add this script after renderCart() and after any cart update logic
 
-                const cart = JSON.parse(localStorage.getItem("cart")) || [];
-                if (cart.length === 0) {
-                  alert("Your cart is empty.");
-                  return;
-                }
+        function updateCartCount() {
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-                const orderRef = "HB-" + new Date().getTime();
-                let message = `Hello 👋 我想訂購 HelloBox\n訂單編號：${orderRef}\n`;
+          const countElemById = document.getElementById("cart-count");
+          const countElem =
+            countElemById || document.querySelector(".site-cart .count");
 
-                for (let i = 0; i < cart.length; i++) {
-                  const item = cart[i];
-                  const extras = item.extras || {};
-                  message += `\n🧸 產品 ${i + 1}：\n`;
-                  message += `名稱：${item.title}\n`;
-                  message += `價錢：$${item.price}\n`;
-                  message += `🖼 相片：${
-                    extras.photoUrl ? extras.photoUrl : "(未上傳)"
-                  }\n`;
-                  message += `🎵 YouTube：${
-                    extras.youtube ? extras.youtube : "(未填)"
-                  }\n`;
-                  message += `🎤 語音：請稍後WhatsApp語音\n`;
-                }
+          console.log("Cart count:", cart.length);
+          if (countElem) {
+            if (cart.length > 0) {
+              countElem.textContent = cart.length;
+              countElem.style.display = "inline-block";
+            } else {
+              countElem.style.display = "none";
+            }
+          }
+        }
 
-                message += `\n`;
+        // Add this after your updateCartCount() function
 
-                const encoded = encodeURIComponent(message);
-                window.location.href = `https://wa.me/85263783481?text=${encoded}`;
-              });
+        // Listen for localStorage changes (from other tabs/windows)
+        window.addEventListener("storage", function (e) {
+          if (e.key === "cart") {
+            updateCartCount();
+          }
+        });
+
+        // Optionally, also update on focus (in case of changes in other tabs)
+        window.addEventListener("focus", function () {
+          updateCartCount();
+        });
+
+        // Handle quantity change and remove
+        document
+          .getElementById("cart-table-body")
+          .addEventListener("click", async function (e) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (e.target.classList.contains("cart-remove")) {
+              e.preventDefault();
+              const idx = +e.target.getAttribute("data-idx");
+              // After removing an item
+              cart.splice(idx, 1);
+              localStorage.setItem("cart", JSON.stringify(cart));
+              renderCart();
+              updateCartCount(); // <-- Add this
+            }
+            if (e.target.classList.contains("cart-upload-btn-each")) {
+              e.preventDefault();
+              const idx = +e.target.getAttribute("data-idx");
+              const fileInput = document.querySelector(
+                `.cart-photo-each[data-idx="${idx}"]`
+              );
+              const photoUrlInput = document.querySelector(
+                `.cart-photo-url-each[data-idx="${idx}"]`
+              );
+              if (fileInput && fileInput.files[0]) {
+                e.target.textContent = "上傳中...";
+                const url = await uploadImage(fileInput.files[0]);
+                photoUrlInput.value = url;
+                // After uploading a photo
+                cart[idx].extras = cart[idx].extras || {};
+                cart[idx].extras.photoUrl = url;
+                localStorage.setItem("cart", JSON.stringify(cart));
+                updateCartCount(); // <-- Add this
+                document.getElementById(
+                  `cart-photo-preview-each-${idx}`
+                ).innerHTML = `<img src="${url}" style="max-width:60px;max-height:60px;">`;
+                e.target.textContent = "已上傳";
+              } else {
+                alert("請先選擇圖片");
+              }
+            }
+          });
+
+        document
+          .getElementById("cart-table-body")
+          .addEventListener("change", function (e) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (e.target.classList.contains("cart-photo-each")) {
+              const idx = +e.target.getAttribute("data-idx");
+              const file = e.target.files[0];
+              if (file) {
+                cropperFileInput = e.target;
+                cropperIdx = idx;
+                const reader = new FileReader();
+                reader.onload = function (ev) {
+                  document.getElementById("cropper-image").src =
+                    ev.target.result;
+                  document.getElementById("cropper-modal").style.display =
+                    "flex";
+                  if (cropper) cropper.destroy();
+                  cropper = new Cropper(
+                    document.getElementById("cropper-image"),
+                    {
+                      aspectRatio: 1,
+                      viewMode: 1,
+                      movable: true,
+                      zoomable: true,
+                      rotatable: false,
+                      scalable: false,
+                      autoCropArea: 1,
+                    }
+                  );
+                };
+                reader.readAsDataURL(file);
+              }
+              // Do NOT update preview here!
+            }
+            if (e.target.classList.contains("cart-youtube-each")) {
+              const idx = +e.target.getAttribute("data-idx");
+              cart[idx].extras = cart[idx].extras || {};
+              cart[idx].extras.youtube = e.target.value;
+              localStorage.setItem("cart", JSON.stringify(cart));
+              updateCartCount();
+            }
+          });
+
+        renderCart();
+        updateCartCount(); // <-- This ensures the cart count is correct on page load
+      });
+
+      document
+        .querySelector(".btn.btn-primary.btn-lg.py-3.btn-block")
+        .addEventListener("click", async function (e) {
+          e.preventDefault();
+
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          if (cart.length === 0) {
+            alert("Your cart is empty.");
+            return;
+          }
+
+          const orderRef = "HB-" + new Date().getTime();
+          let message = `Hello 👋 我想訂購 HelloBox\n訂單編號：${orderRef}\n`;
+
+          for (let i = 0; i < cart.length; i++) {
+            const item = cart[i];
+            const extras = item.extras || {};
+            message += `\n🧸 產品 ${i + 1}：\n`;
+            message += `名稱：${item.title}\n`;
+            message += `價錢：$${item.price}\n`;
+            message += `🖼 相片：${
+              extras.photoUrl ? extras.photoUrl : "(未上傳)"
+            }\n`;
+            message += `🎵 YouTube：${
+              extras.youtube ? extras.youtube : "(未填)"
+            }\n`;
+            message += `🎤 語音：請稍後WhatsApp語音\n`;
+          }
+
+          message += `\n`;
+
+          const encoded = encodeURIComponent(message);
+          window.location.href = `https://wa.me/85263783481?text=${encoded}`;
+        });
     </script>
     <!-- Add this in your <head> section for Cropper.js -->
     <link
@@ -626,13 +691,17 @@
         document.getElementById("cropper-modal").style.display = "none";
         if (cropper) cropper.destroy();
         cropper = null;
-        cropperFileInput.value = ""; // reset file input
+        if (cropperFileInput) cropperFileInput.value = ""; // reset file input
       };
 
       // Confirm crop and upload
       document.getElementById("cropper-confirm").onclick = async function () {
         if (!cropper) return;
         const canvas = cropper.getCroppedCanvas({ width: 800, height: 800 });
+        const label = document.getElementById(
+          `cart-upload-label-${cropperIdx}`
+        );
+        if (label) label.textContent = "上傳中...";
         canvas.toBlob(
           async function (blob) {
             // Show preview
@@ -643,12 +712,6 @@
             document.getElementById("cropper-modal").style.display = "none";
             cropper.destroy();
             cropper = null;
-
-            // Show uploading text on button
-            const uploadBtn = document.querySelector(
-              `.cart-upload-btn-each[data-idx="${cropperIdx}"]`
-            );
-            if (uploadBtn) uploadBtn.textContent = "上傳中...";
 
             // Upload
             const url = await uploadImage(blob);
@@ -663,7 +726,7 @@
             document.getElementById(
               `cart-photo-preview-each-${cropperIdx}`
             ).innerHTML = `<img src="${url}" style="max-width:60px;max-height:60px;">`;
-            if (uploadBtn) uploadBtn.textContent = "已上傳";
+            if (label) label.textContent = "已上傳";
           },
           "image/jpeg",
           0.92
