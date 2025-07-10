@@ -249,11 +249,11 @@
               <div class="site-blocks-table">
                 <table class="table table-bordered">
                   <thead>
-                    <tr>
+                    <!-- <tr>
                       <th class="product-thumbnail">Product</th>
                       <th class="product-price" style="width: 70px">Price</th>
                       <th class="product-remove"></th>
-                    </tr>
+                    </tr> -->
                   </thead>
                   <tbody id="cart-table-body">
                     <!-- Cart items will be injected here by JS -->
@@ -316,7 +316,28 @@
                       <span class="text-black">Total</span>
                     </div>
                     <div class="col-md-6 text-right">
-                      <strong class="text-black">$230.00</strong>
+                      <strong class="text-black" id="cart-total">$0.00</strong>
+                      <script>
+                        // Update cart total on page load and whenever cart changes
+                        function updateCartTotal() {
+                          const cart =
+                            JSON.parse(localStorage.getItem("cart")) || [];
+                          let total = 0;
+                          cart.forEach((item) => {
+                            total += Number(item.price) || 0;
+                          });
+                          document.getElementById(
+                            "cart-total"
+                          ).textContent = `$${total}`;
+                        }
+                        document.addEventListener(
+                          "DOMContentLoaded",
+                          updateCartTotal
+                        );
+                        window.addEventListener("storage", function (e) {
+                          if (e.key === "cart") updateCartTotal();
+                        });
+                      </script>
                     </div>
                   </div>
 
@@ -406,7 +427,9 @@
               total += itemTotal;
               const extras = item.extras || {};
               html += `
-                      <tr data-id="${item.id}">
+                        <tr data-id="${
+                          item.id
+                        }" style="background-color: #e6f9ff;">
                         <td class="product-thumbnail">
                           ${item.title} <br />
                           <img src="${item.image}" alt="${
@@ -458,6 +481,7 @@
                               </td>
                             </tr>
                           </table>
+                          <br />
                         </td>
                       </tr>
                     `;
@@ -520,6 +544,8 @@
               localStorage.setItem("cart", JSON.stringify(cart));
               renderCart();
               updateCartCount(); // <-- Add this
+              // Refresh total amount after removing item
+              if (typeof updateCartTotal === "function") updateCartTotal();
             }
             if (e.target.classList.contains("cart-upload-btn-each")) {
               e.preventDefault();
