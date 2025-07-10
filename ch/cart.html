@@ -291,7 +291,63 @@
                   />
                 </div>
                 <div class="col-md-4">
-                  <button class="btn btn-primary btn-sm">Apply Coupon</button>
+                  <button class="btn btn-primary btn-sm" id="apply-coupon-btn">
+                    Apply Coupon
+                  </button>
+                  <script>
+                    document
+                      .getElementById("apply-coupon-btn")
+                      .addEventListener("click", async function (e) {
+                        e.preventDefault();
+                        // Firebase config
+                        const firebaseConfig = {
+                          apiKey: "AIzaSyD8dpsml9CpIw28VKYTqOX2QiGki5_H2JQ",
+                          authDomain: "helloboxhk2025.firebaseapp.com",
+                          projectId: "helloboxhk2025",
+                          storageBucket: "helloboxhk2025.firebasestorage.app",
+                          messagingSenderId: "171867347123",
+                          appId: "1:171867347123:web:a8c8b5c4744fd1c51138c6",
+                          measurementId: "G-H18SL4D6ST",
+                        };
+                        try {
+                          const app =
+                            window.firebaseApp ||
+                            (window.firebaseApp = await import(
+                              "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"
+                            ).then((m) => m.initializeApp(firebaseConfig)));
+                          const { getFirestore, collection, getDocs } =
+                            await import(
+                              "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"
+                            );
+                          const db = getFirestore(app);
+                          const testCollection = collection(db, "promocode");
+                          const snapshot = await getDocs(testCollection);
+
+                          const userCoupon = document
+                            .getElementById("coupon")
+                            .value.trim();
+                          let found = false;
+                          snapshot.forEach((doc) => {
+                            if (
+                              doc.id.toLowerCase() === userCoupon.toLowerCase()
+                            ) {
+                              const data = doc.data();
+                              if (data.discount) {
+                                alert(`優惠碼正確，折扣：${data.discount}%`);
+                              } else {
+                                alert("優惠碼正確，但未設折扣百分比。");
+                              }
+                              found = true;
+                            }
+                          });
+                          if (!found) {
+                            alert("優惠碼無效。");
+                          }
+                        } catch (err) {
+                          alert("Firestore connection error: " + err);
+                        }
+                      });
+                  </script>
                 </div>
               </div>
             </div>
@@ -758,43 +814,6 @@
           0.92
         );
       };
-    </script>
-
-    <script type="module">
-      // Import the functions you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
-      import {
-        getFirestore,
-        collection,
-        getDocs,
-      } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-      // Firebase config
-      const firebaseConfig = {
-        apiKey: "AIzaSyD8dpsml9CpIw28VKYTqOX2QiGki5_H2JQ",
-        authDomain: "helloboxhk2025.firebaseapp.com",
-        projectId: "helloboxhk2025",
-        storageBucket: "helloboxhk2025.firebasestorage.app",
-        messagingSenderId: "171867347123",
-        appId: "1:171867347123:web:a8c8b5c4744fd1c51138c6",
-        measurementId: "G-H18SL4D6ST",
-      };
-      console.log("aaaaaaa.");
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const db = getFirestore(app); // ✅ Correct way to get Firestore
-      console.log("✅ Firebase initialized successfully.");
-      // Check Firestore connection by attempting to read a collection
-      try {
-        const testCollection = collection(db, "promocode");
-        const snapshot = await getDocs(testCollection); // ✅ await or .then
-        console.log("✅ Firestore connected successfully.");
-        console.log(`📦 ${snapshot.size} documents retrieved.`);
-      } catch (err) {
-        console.error("❌ Firestore connection error:", err);
-      }
     </script>
   </body>
 </html>
