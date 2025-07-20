@@ -65,7 +65,34 @@
                     <li>
                       <a href="cart.html" class="site-cart">
                         <span class="icon icon-shopping_cart"></span>
-                        <span class="count">2</span>
+                        <span class="count" id="cart-count">5</span>
+                        <script>
+                          document.addEventListener(
+                            "DOMContentLoaded",
+                            function () {
+                              let cart = [];
+                              try {
+                                cart =
+                                  JSON.parse(localStorage.getItem("cart")) ||
+                                  [];
+                              } catch (e) {
+                                cart = [];
+                              }
+                              document.getElementById(
+                                "cart-count"
+                              ).textContent = cart.length;
+                              if (cart.length === 0) {
+                                document.getElementById(
+                                  "cart-count"
+                                ).style.display = "none";
+                              } else {
+                                document.getElementById(
+                                  "cart-count"
+                                ).style.display = "";
+                              }
+                            }
+                          );
+                        </script>
                       </a>
                     </li>
                     <!-- Language toggle -->
@@ -134,9 +161,8 @@
               <h1 class="mb-2">Tiny Box, Big Hello</h1>
               <div class="intro-text text-center text-md-left">
                 <p class="mb-4">
-                  Handcrafted with bricks, loaded with your voice and favourite
-                  song, and made to stick on your fridge. 🎁 Add a photo, upload
-                  a message, and send a smile that speaks.
+                  由手工積木拼砌而成，預載你嘅聲音同最鍾意嘅音樂，仲可以貼上雪櫃。🎁
+                  加張相、錄段說話、傳遞窩心笑容！
                 </p>
                 <p>
                   <a href="shop.html" class="btn btn-sm btn-primary"
@@ -161,11 +187,10 @@
                 <span class="icon-truck"></span>
               </div>
               <div class="text">
-                <h2 class="text-uppercase">FREE Shipping</h2>
+                <h2 class="text-uppercase">免費送貨</h2>
                 <p>
-                  You’re one of the lucky few! As an early HelloBox supporter,
-                  you get FREE shipping — no codes, no fuss, just good vibes and
-                  gifts on your doorstep.
+                  你係 HelloBox
+                  嘅早鳥支持者之一！香港地區免運費，無需輸入優惠碼，直接送上門。
                 </p>
               </div>
             </div>
@@ -178,11 +203,10 @@
                 <span class="icon-mic"></span>
               </div>
               <div class="text">
-                <h2 class="text-uppercase">Your Voice, Our Gift!</h2>
+                <h2 class="text-uppercase">免費語音預載</h2>
                 <p>
-                  Pre-upload your personal voice message to the HelloBox for
-                  FREE! 🧡 Send love, laughter, or a secret message — your voice
-                  makes it one-of-a-kind.
+                  買任何一款 HelloBox
+                  都可免費預載你錄製嘅語音留言！無論係表白、笑話定秘密，都變成獨一無二嘅禮物。
                 </p>
               </div>
             </div>
@@ -195,10 +219,10 @@
                 <span class="icon-magnet"></span>
               </div>
               <div class="text">
-                <h2 class="text-uppercase">Free Magnetic Plugin</h2>
+                <h2 class="text-uppercase">免費磁貼功能</h2>
                 <p>
-                  Your HelloBox can proudly 🧲 on your fridge like a true
-                  household hero. No extra charge, just extra charm!
+                  每個 HelloBox
+                  背後都配有🧲設計，可以輕鬆貼上雪櫃、辦公桌等鐵面，實用又靚！
                 </p>
               </div>
             </div>
@@ -216,16 +240,11 @@
             >
               <a class="block-2-item">
                 <figure class="image">
-                  <img
-                    src="images/printing.png"
-                    alt=""
-                    class="img-fluid"
-                    loading="lazy"
-                  />
+                  <img src="images/printing.png" alt="" class="img-fluid" loading="lazy" />
                 </figure>
                 <div class="text">
                   <span class="text-uppercase"></span>
-                  <h3>High Quality Card Printing</h3>
+                  <h3>高品質相卡打印</h3>
                 </div>
               </a>
             </div>
@@ -236,16 +255,11 @@
             >
               <a class="block-2-item">
                 <figure class="image">
-                  <img
-                    src="images/bricks.png"
-                    alt=""
-                    class="img-fluid"
-                    loading="lazy"
-                  />
+                  <img src="images/bricks.png" alt="" class="img-fluid" loading="lazy" />
                 </figure>
                 <div class="text">
                   <span class="text-uppercase"></span>
-                  <h3>Bricking Fun</h3>
+                  <h3>手工拼砌設計</h3>
                 </div>
               </a>
             </div>
@@ -256,16 +270,11 @@
             >
               <a class="block-2-item">
                 <figure class="image">
-                  <img
-                    src="images/music.png"
-                    alt=""
-                    class="img-fluid"
-                    loading="lazy"
-                  />
+                  <img src="images/music.png" alt="" class="img-fluid" loading="lazy" />
                 </figure>
                 <div class="text">
                   <span class="text-uppercase"></span>
-                  <h3>Preloaded Music and Voice</h3>
+                  <h3>預載音樂與語音</h3>
                 </div>
               </a>
             </div>
@@ -277,7 +286,7 @@
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-md-7 site-section-heading text-center pt-4">
-              <h2>Featured Products</h2>
+              <h2>精選產品區</h2>
             </div>
           </div>
           <div class="row">
@@ -286,69 +295,79 @@
                 <div class="item">
                   <div class="block-4 text-center">
                     <figure class="block-4-image">
-                      <img
-                        src="images/products/sakura-page1.png"
-                        alt="Image placeholder"
-                        class="img-fluid"
-                        loading="lazy"
-                      />
+                      <a href="shop-single.html?id=sakura">
+                        <img
+                          src="images/products/sakura-page1.png"
+                          alt="Image placeholder"
+                          class="img-fluid"
+                          loading="lazy"
+                        />
+                      </a>
                     </figure>
                     <div class="block-4-text p-4">
-                      <h3><a href="#">Sakura Pop</a></h3>
-                      <p class="mb-0">
-                        Soft and pink like cherry blossoms in spring.
-                      </p>
-                      <p class="text-primary font-weight-bold">$188</p>
+                      <h3>
+                        <a href="shop-single.html?id=sakura"
+                          >櫻花風 Sakura Pop</a
+                        >
+                      </h3>
+                      <p class="mb-0">柔和粉調，盛開如春日櫻花。</p>
+                      <p class="text-primary font-weight-bold">$198</p>
                     </div>
                   </div>
                 </div>
                 <div class="item">
                   <div class="block-4 text-center">
                     <figure class="block-4-image">
-                      <img
-                        src="images/products/italy-page1.png"
-                        alt="Image placeholder"
-                        class="img-fluid"
-                        loading="lazy"
-                      />
+                      <a href="shop-single.html?id=italy">
+                        <img
+                          src="images/products/italy-page1.png"
+                          alt="Image placeholder"
+                          class="img-fluid"
+                          loading="lazy"
+                        />
+                      </a>
                     </figure>
                     <div class="block-4-text p-4">
-                      <h3><a href="#">Bella Vita</a></h3>
-                      <p class="mb-0">
-                        Italian-inspired charm to enjoy every moment of life
-                      </p>
-                      <p class="text-primary font-weight-bold">$188</p>
+                      <h3>
+                        <a href="shop-single.html?id=italy"
+                          >義想生活 Bella Vita</a
+                        >
+                      </h3>
+                      <p class="mb-0">義式浪漫風格，享受生活每一刻。</p>
+                      <p class="text-primary font-weight-bold">$198</p>
                     </div>
                   </div>
                 </div>
                 <div class="item">
                   <div class="block-4 text-center">
                     <figure class="block-4-image">
-                      <img
-                        src="images/products/rainbow-page1.png"
-                        alt="Image placeholder"
-                        class="img-fluid"
-                        loading="lazy"
-                      />
+                      <a href="shop-single.html?id=rainbow">
+                        <img
+                          src="images/products/rainbow-page1.png"
+                          alt="Image placeholder"
+                          class="img-fluid"
+                          loading="lazy"
+                        />
+                      </a>
                     </figure>
                     <div class="block-4-text p-4">
-                      <h3><a href="#">Rainbow's Beats</a></h3>
-                      <p class="mb-0">
-                        Bright like a rainbow, bringing cheerful beats to your
-                        day
-                      </p>
-                      <p class="text-primary font-weight-bold">$50</p>
+                      <h3>
+                        <a href="shop-single.html?id=rainbow"
+                          >彩虹節拍 Rainbow's Beats</a
+                        >
+                      </h3>
+                      <p class="mb-0">色彩繽紛如彩虹，為你帶來歡樂節奏。</p>
+                      <p class="text-primary font-weight-bold">$198</p>
                     </div>
                   </div>
                 </div>
-                <div class="item">
+                <!-- <div class="item">
                   <div class="block-4 text-center">
                     <figure class="block-4-image">
                       <img
                         src="images/cloth_3.png"
                         alt="Image placeholder"
                         class="img-fluid"
-                        loading="lazy"
                       />
                     </figure>
                     <div class="block-4-text p-4">
@@ -365,7 +384,6 @@
                         src="images/shoe_1.png"
                         alt="Image placeholder"
                         class="img-fluid"
-                        loading="lazy"
                       />
                     </figure>
                     <div class="block-4-text p-4">
@@ -374,7 +392,7 @@
                       <p class="text-primary font-weight-bold">$50</p>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -385,14 +403,14 @@
         <div class="container">
           <div class="row justify-content-center mb-5">
             <div class="col-md-7 site-section-heading text-center pt-4">
-              <h2>Big Sale!</h2>
+              <h2>限定驚喜!</h2>
             </div>
           </div>
           <div class="row align-items-center">
             <div class="col-md-12 col-lg-7 mb-5">
-              <a href="#"
+              <a href="shop-single.html?id=mystery"
                 ><img
-                  src="images/sale.png"
+                  src="images/products/mystery-page1.png"
                   alt="Image placeholder"
                   class="img-fluid rounded"
                   loading="lazy"
@@ -404,20 +422,20 @@
                 By <a href="#">Carl Smith</a>
                 <span class="block-8-sep">&bullet;</span> September 3, 2018
               </p> -->
-              <p>
+              <!-- <p>
                 🎁 HELLOBOX Mystery Box — Limited-Time Offer! Each mystery box
                 is packed with surprise custom goodies—from brick-based crafts
                 to voice modules and magnetic photo cards. You’ll never know
                 what joy is inside until you open it! ✨ Now only: HK$158
                 (Original: HK$188) 📦 Limited stock. Grab yours before it’s
                 gone!
-              </p>
-              <!-- <p>
+              </p> -->
+              <p>
                 🎁 HELLOBOX 限定盲盒優惠！ 驚喜滿滿的 Mystery Box
                 限時優惠登場！每盒內含精選客製款式，包括錄音功能、獨家積木設計、磁石相框等——打開前你永遠唔知有咩驚喜！
-                ✨ 現售：HK$158（原價 HK$188） 📦
+                ✨ 現售：HK$168（原價 HK$198） 📦
                 數量有限，售完即止！快啲搶購啦～
-              </p> -->
+              </p>
               <p>
                 <a href="shop.html" class="btn btn-primary btn-sm">Shop Now</a>
               </p>
@@ -465,7 +483,6 @@
                   src="images/hero_1.png"
                   alt="Image placeholder"
                   class="img-fluid rounded mb-4"
-                  loading="lazy"
                 />
                 <h3 class="font-weight-light mb-0">
                   Finding Your Perfect Shoes
@@ -514,10 +531,6 @@
               <p>
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 Copyright &copy;
-                <script
-                  data-cfasync="false"
-                  src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
-                ></script>
                 <script>
                   document.write(new Date().getFullYear());
                 </script>

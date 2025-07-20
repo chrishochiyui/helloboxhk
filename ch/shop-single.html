@@ -678,7 +678,7 @@ Type-c 叉電線：20cm<br>
           descElem.innerHTML = shortDesc;
           readMoreLink.style.display = "inline";
           let expanded = false;
-          readMoreLink.textContent = "Read more";
+          readMoreLink.textContent = "👉Read more👈";
           readMoreLink.onclick = function () {
             if (!expanded) {
               descElem.innerHTML = product.desc;
@@ -686,7 +686,7 @@ Type-c 叉電線：20cm<br>
               expanded = true;
             } else {
               descElem.innerHTML = shortDesc;
-              readMoreLink.textContent = "Read more";
+              readMoreLink.textContent = "👉Read more👈";
               expanded = false;
             }
           };
