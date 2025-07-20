@@ -383,62 +383,78 @@
                         background: #fff;
                         padding: 24px 18px;
                         border-radius: 8px;
-                        max-width: 400px;
+                        max-width: 420px;
+                        width: 90vw;
+                        height: 70vh;
                         margin: auto;
                         box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
                         text-align: left;
+                        display: flex;
+                        flex-direction: column;
                       "
                     >
-                      <h5 style="margin-bottom: 12px">訂購須知 / Disclaimer</h5>
-                      <ul
+                      <h5 style="margin-bottom: 12px; flex: 0 0 auto">
+                        為保障雙方權益，請於付款前確認以下內容：
+                      </h5>
+                      <div
                         style="
-                          font-size: 1em;
+                          flex: 1 1 auto;
+                          overflow-y: auto;
                           margin-bottom: 16px;
-                          padding-left: 18px;
                         "
                       >
-                        <li>
-                          📸
-                          圖片僅供參考：產品為人手製作，每件外觀略有差異，實物可能與照片略有不同。
-                        </li>
-                        <li>
-                          💬 請先聯絡確認庫存：下單前必須透過 WhatsApp
-                          與我們確認產品庫存及交易詳情。
-                        </li>
-                        <li>
-                          🛍️
-                          熱門款式售罄風險：部分款式數量有限，如已售罄，我們將提供替代選擇。
-                        </li>
-                        <li>
-                          💳 支付方式：目前只接受 PayMe
-                          付款。如需其他支付方式，請提前查詢。
-                        </li>
-                        <li>
-                          ⚠️ 安全提示：產品內含細小零件，建議 6 歲以上兒童
-                          在成人指導下使用。
-                        </li>
-                        <li>
-                          🔊 送禮預錄音功能：如您購買作送禮用途，可透過 WhatsApp
-                          傳送錄音檔，我們可協助預先上載至 Hellobox 裡。
-                        </li>
-                        <li>
-                          🎵 音樂版權責任：若您選擇上傳 YouTube
-                          連結轉為音樂，請確保您擁有該內容的使用權，否則我們不承擔任何版權責任。
-                        </li>
-                        <li>
-                          🔋 電池消耗提醒：Hellobox
-                          使用期間電池將逐漸損耗，屬正常現象。
-                        </li>
-                        <li>
-                          🛠️
-                          保養與損壞：如屬人為損壞或誤用，恕不提供保養或更換服務。
-                        </li>
-                        <li>
-                          ⚖️ 最終決定權：如有任何爭議，Hellobox HK
-                          保留最終決定權。
-                        </li>
-                      </ul>
-                      <div style="margin-bottom: 16px">
+                        <ul
+                          style="
+                            font-size: 1em;
+                            margin-bottom: 0;
+                            padding-left: 18px;
+                          "
+                        >
+                          <li>
+                            💬 請先聯絡確認庫存：下單前必須透過 WhatsApp
+                            與我們確認產品庫存及交易詳情。
+                          </li>
+                          <li>
+                            💳 支付方式：目前只接受 PayMe
+                            付款。如需其他支付方式，請提前查詢。
+                          </li>
+                          <li>
+                            📸
+                            圖片僅供參考：產品為人手製作，每件外觀略有差異，實物可能與照片略有不同。
+                          </li>
+                          <li>
+                            🛍️
+                            熱門款式售罄風險：部分款式數量有限，如已售罄，我們將提供替代選擇。
+                          </li>
+
+                          <li>
+                            ⚠️ 安全提示：產品內含細小零件，建議 6
+                            歲以上兒童在成人指導下使用。
+                          </li>
+                          <li>
+                            🔊 送禮預錄音功能：如您購買作送禮用途，可透過
+                            WhatsApp 傳送錄音檔，我們可協助預載至 Hellobox 裡。
+                          </li>
+                          <li>
+                            🎵 音樂版權責任：如您選擇上傳 YouTube
+                            連結轉為mp3音樂預載至Hellobox，請確保您擁有該內容的使用權，否則我們不承擔任何版權責任。您亦可透過
+                            USB 線自行連接電腦並儲入 MP3 音樂檔案。
+                          </li>
+                          <li>
+                            🔋 電池消耗提醒：Hellobox
+                            使用期間電池將逐漸損耗，屬正常現象。
+                          </li>
+                          <li>
+                            🛠️
+                            保養與損壞：如屬人為損壞或誤用，恕不提供保養或更換服務。
+                          </li>
+                          <li>
+                            ⚖️ 最終決定權：如有任何爭議，Hellobox HK
+                            保留最終決定權。
+                          </li>
+                        </ul>
+                      </div>
+                      <div style="margin-bottom: 16px; flex: 0 0 auto">
                         <input
                           type="checkbox"
                           id="disclaimer-agree"
@@ -448,7 +464,7 @@
                           >我已閱讀並同意以上條款</label
                         >
                       </div>
-                      <div style="text-align: right">
+                      <div style="text-align: right; flex: 0 0 auto">
                         <button
                           id="disclaimer-cancel"
                           class="btn btn-secondary"
