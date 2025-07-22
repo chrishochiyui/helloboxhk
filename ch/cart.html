@@ -939,75 +939,128 @@
         document.body.style.position = "";
         document.body.style.width = "";
       };
-      document.getElementById("disclaimer-proceed").onclick = function () {
-        // Actually proceed to WhatsApp checkout
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        let errorElem = document.getElementById("checkout-error-message");
-        if (!errorElem) {
-          const btn = document.querySelector(
-            ".btn.btn-primary.btn-lg.py-3.btn-block"
-          );
-          errorElem = document.createElement("div");
-          errorElem.id = "checkout-error-message";
-          errorElem.style.color = "#dc3545";
-          errorElem.style.fontSize = "1em";
-          errorElem.style.marginBottom = "10px";
-          btn.parentElement.insertBefore(errorElem, btn);
-        }
-        errorElem.textContent = "";
-        if (cart.length === 0) {
-          errorElem.textContent = "Your cart is empty.";
+      // Add floating loading popup HTML
+      if (!document.getElementById("floating-loading-popup")) {
+        const loadingDiv = document.createElement("div");
+        loadingDiv.id = "floating-loading-popup";
+        loadingDiv.style.display = "none";
+        loadingDiv.style.position = "fixed";
+        loadingDiv.style.top = "0";
+        loadingDiv.style.left = "0";
+        loadingDiv.style.width = "100vw";
+        loadingDiv.style.height = "100vh";
+        loadingDiv.style.zIndex = "20000";
+        loadingDiv.style.background = "rgba(0,0,0,0.3)";
+        loadingDiv.innerHTML = `
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;padding:32px 36px;border-radius:12px;box-shadow:0 2px 16px rgba(0,0,0,0.18);text-align:center;min-width:180px;">
+            <div class="spinner-border text-primary" role="status" style="width:2.5rem;height:2.5rem;margin-bottom:12px;"></div>
+            <div style="font-size:1.1em;color:#333;">正在處理優惠碼，請稍候...</div>
+          </div>
+        `;
+        document.body.appendChild(loadingDiv);
+      }
+
+      document.getElementById("disclaimer-proceed").onclick =
+        async function () {
+          // Actually proceed to WhatsApp checkout
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          let errorElem = document.getElementById("checkout-error-message");
+          if (!errorElem) {
+            const btn = document.querySelector(
+              ".btn.btn-primary.btn-lg.py-3.btn-block"
+            );
+            errorElem = document.createElement("div");
+            errorElem.id = "checkout-error-message";
+            errorElem.style.color = "#dc3545";
+            errorElem.style.fontSize = "1em";
+            errorElem.style.marginBottom = "10px";
+            btn.parentElement.insertBefore(errorElem, btn);
+          }
+          errorElem.textContent = "";
+          if (cart.length === 0) {
+            errorElem.textContent = "Your cart is empty.";
+            document.getElementById("disclaimer-modal").style.display = "none";
+            document.getElementById("disclaimer-agree").checked = false;
+            document.getElementById("disclaimer-proceed").disabled = true;
+            document.body.style.overflow = "";
+            return;
+          }
           document.getElementById("disclaimer-modal").style.display = "none";
           document.getElementById("disclaimer-agree").checked = false;
           document.getElementById("disclaimer-proceed").disabled = true;
           document.body.style.overflow = "";
-          return;
-        }
-        document.getElementById("disclaimer-modal").style.display = "none";
-        document.getElementById("disclaimer-agree").checked = false;
-        document.getElementById("disclaimer-proceed").disabled = true;
-        document.body.style.overflow = "";
-        document.body.style.position = "";
-        document.body.style.width = "";
+          document.body.style.position = "";
+          document.body.style.width = "";
 
-        const orderRef = "HB-" + Math.floor(100000 + Math.random() * 900000);
-        let message = `Hello 👋 我想訂購 HelloBox\n訂單編號：${orderRef}\n`;
+          // Show loading popup if promocode needs to be redeemed
+          let promoRedeemed = false;
+          let promoCode = "";
+          let loadingPopup = document.getElementById("floating-loading-popup");
+          let needPromo =
+            window.couponValid &&
+            window.couponDiscount &&
+            document.getElementById("coupon").value.trim();
+          if (needPromo) {
+            loadingPopup.style.display = "block";
+          }
+          if (window.couponValid && window.couponDiscount) {
+            promoCode = document.getElementById("coupon").value.trim();
+            if (promoCode) {
+              try {
+                await fetch(
+                  "https://asia-east2-helloboxhk2025.cloudfunctions.net/applyPromoCode",
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ data: { code: promoCode } }),
+                  }
+                );
+                promoRedeemed = true;
+              } catch (err) {
+                // Optionally handle error, but still proceed to WhatsApp
+              }
+            }
+          }
+          if (needPromo) {
+            loadingPopup.style.display = "none";
+          }
 
-        for (let i = 0; i < cart.length; i++) {
-          const item = cart[i];
-          const extras = item.extras || {};
-          message += `\n🧸 產品 ${i + 1}：\n`;
-          message += `名稱：${item.title}\n`;
-          message += `價錢：$${item.price}\n`;
-          message += `🖼 相片：${
-            extras.photoUrl ? extras.photoUrl : "(未上傳)"
-          }\n`;
-          message += `🎵 YouTube：${
-            extras.youtube ? extras.youtube : "(未填)"
-          }\n`;
-          // message += `🎤 語音：請稍後WhatsApp語音\n`;
-        }
+          const orderRef = "HB-" + Math.floor(100000 + Math.random() * 900000);
+          let message = `Hello 👋 我想訂購 HelloBox\n訂單編號：${orderRef}\n`;
 
-        message += `\n`;
+          for (let i = 0; i < cart.length; i++) {
+            const item = cart[i];
+            const extras = item.extras || {};
+            message += `\n🧸 產品 ${i + 1}：\n`;
+            message += `名稱：${item.title}\n`;
+            message += `價錢：$${item.price}\n`;
+            message += `🖼 相片：${
+              extras.photoUrl ? extras.photoUrl : "(未上傳)"
+            }\n`;
+            message += `🎵 YouTube：${
+              extras.youtube ? extras.youtube : "(未填)"
+            }\n`;
+            // message += `🎤 語音：請稍後WhatsApp語音\n`;
+          }
 
-        let subtotal = 0;
-        cart.forEach((item) => {
-          subtotal += Number(item.price) || 0;
-        });
-        message += `總數：$${subtotal}\n`;
+          message += `\n`;
 
-        if (window.couponValid && window.couponDiscount) {
-          message += `優惠碼：${document
-            .getElementById("coupon")
-            .value.trim()}\n`;
-          message += `優惠折扣：$${window.couponDiscount}\n`;
-          const finalPrice = Math.max(0, subtotal - window.couponDiscount);
-          message += `折後總數：$${finalPrice}\n`;
-        }
+          let subtotal = 0;
+          cart.forEach((item) => {
+            subtotal += Number(item.price) || 0;
+          });
+          message += `總數：$${subtotal}\n`;
 
-        const encoded = encodeURIComponent(message);
-        window.location.href = `https://wa.me/85263783481?text=${encoded}`;
-      };
+          if (window.couponValid && window.couponDiscount) {
+            message += `優惠碼：${promoCode}\n`;
+            message += `優惠折扣：$${window.couponDiscount}\n`;
+            const finalPrice = Math.max(0, subtotal - window.couponDiscount);
+            message += `折後總數：$${finalPrice}\n`;
+          }
+
+          const encoded = encodeURIComponent(message);
+          window.location.href = `https://wa.me/85263783481?text=${encoded}`;
+        };
     </script>
     <!-- Add this in your <head> section for Cropper.js -->
     <link
