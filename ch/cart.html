@@ -414,9 +414,14 @@
                             💬 請先聯絡確認庫存：下單前必須透過 WhatsApp
                             與我們確認產品庫存及交易詳情。
                           </li>
+
                           <li>
-                            💳 支付方式：目前只接受 PayMe
+                            💳 支付方式：目前只接受 PayMe 或 FPS
                             付款。如需其他支付方式，請提前查詢。
+                          </li>
+                          <li>
+                            🚚
+                            出貨：下單後一般需時1-2個工作天制作，及後會盡快安排順豐速遞出貨
                           </li>
                           <li>
                             📸
@@ -867,8 +872,20 @@
             errorElem.textContent = "Your cart is empty.";
             return;
           }
-          // Show disclaimer modal
+          // Validate photo upload for each product
+          let missingPhoto = false;
+          cart.forEach((item, idx) => {
+            if (!item.extras || !item.extras.photoUrl) {
+              missingPhoto = true;
+            }
+          });
+          if (missingPhoto) {
+            errorElem.textContent = "請為每件產品上載相片。";
+            return;
+          }
+          // Show disclaimer modal and prevent background scroll
           document.getElementById("disclaimer-modal").style.display = "flex";
+          document.body.style.overflow = "hidden";
         });
 
       // Disclaimer modal logic
@@ -882,6 +899,7 @@
         document.getElementById("disclaimer-modal").style.display = "none";
         document.getElementById("disclaimer-agree").checked = false;
         document.getElementById("disclaimer-proceed").disabled = true;
+        document.body.style.overflow = "";
       };
       document.getElementById("disclaimer-proceed").onclick = function () {
         // Actually proceed to WhatsApp checkout
@@ -904,11 +922,13 @@
           document.getElementById("disclaimer-modal").style.display = "none";
           document.getElementById("disclaimer-agree").checked = false;
           document.getElementById("disclaimer-proceed").disabled = true;
+          document.body.style.overflow = "";
           return;
         }
         document.getElementById("disclaimer-modal").style.display = "none";
         document.getElementById("disclaimer-agree").checked = false;
         document.getElementById("disclaimer-proceed").disabled = true;
+        document.body.style.overflow = "";
 
         const orderRef = "HB-" + new Date().getTime();
         let message = `Hello 👋 我想訂購 HelloBox\n訂單編號：${orderRef}\n`;

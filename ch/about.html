@@ -27,7 +27,7 @@
   <body>
     <div class="site-wrap">
       <header class="site-navbar" role="banner">
-        <div class="site-navbar-top>
+        <div class="site-navbar-top">
           <div class="container">
             <div class="row align-items-center">
               <div
@@ -85,32 +85,16 @@
             <ul class="site-menu js-clone-nav d-none d-md-block">
               <li class="">
                 <a href="index.html">Home</a>
+              </li>
+              <li class="">
+                <a href="about.html">About</a>
                 <!-- <ul class="dropdown">
                 <li><a href="#">Menu One</a></li>
                 <li><a href="#">Menu Two</a></li>
                 <li><a href="#">Menu Three</a></li>
-                <li class="has-children">
-                  <a href="#">Sub Menu</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Menu One</a></li>
-                    <li><a href="#">Menu Two</a></li>
-                    <li><a href="#">Menu Three</a></li>
-                  </ul>
-                </li>
               </ul> -->
               </li>
-              <li class="active">
-                <a href="about.html">About</a>
-                <!-- <ul class="dropdown">
-                  <li><a href="#">Menu One</a></li>
-                  <li><a href="#">Menu Two</a></li>
-                  <li><a href="#">Menu Three</a></li>
-                </ul> -->
-              </li>
-              <li><a href="shop.html">Shop</a></li>
-              <!-- <li><a href="#">Catalogue</a></li>
-              <li><a href="#">New Arrivals</a></li> -->
-              <!-- <li><a href="contact.html">Contact</a></li> -->
+              <li class="active"><a href="shop.html">Shop</a></li>
             </ul>
           </div>
         </nav>
@@ -449,7 +433,7 @@
               <p>
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 Copyright &copy;
-                
+
                 <script>
                   document.write(new Date().getFullYear());
                 </script>
@@ -482,7 +466,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         function updateCartCount() {
           const cart = JSON.parse(localStorage.getItem("cart")) || [];
-          const countElem = document.querySelector('.site-cart .count');
+          const countElem = document.querySelector(".site-cart .count");
           if (countElem) {
             if (cart.length > 0) {
               countElem.textContent = cart.length;
