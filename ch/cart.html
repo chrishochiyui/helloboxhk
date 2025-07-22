@@ -304,7 +304,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 pl-5">
+            <div class="col-md-6 pl-6">
               <div class="row justify-content-end">
                 <div class="col-md-7">
                   <div class="row">
@@ -489,8 +489,18 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-md-12">
-                      <button class="btn btn-primary btn-lg py-3 btn-block">
+                    <div
+                      class="col-md-12 d-flex flex-column align-items-center"
+                    >
+                      <div
+                        id="checkout-error-message"
+                        style="
+                          color: #dc3545;
+                          font-size: 1em;
+                          margin-bottom: 10px;
+                        "
+                      ></div>
+                      <button class="btn btn-primary btn-lg py-3 px-5">
                         前往結帳
                       </button>
                     </div>
@@ -777,6 +787,11 @@
             }
             if (e.target.classList.contains("cart-upload-btn-each")) {
               e.preventDefault();
+              // Clear checkout error message
+              const errorElem = document.getElementById(
+                "checkout-error-message"
+              );
+              if (errorElem) errorElem.textContent = "";
               const idx = +e.target.getAttribute("data-idx");
               const fileInput = document.querySelector(
                 `.cart-photo-each[data-idx="${idx}"]`
@@ -808,6 +823,11 @@
           .addEventListener("change", function (e) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             if (e.target.classList.contains("cart-photo-each")) {
+              // Clear checkout error message when photo input is clicked/changed
+              const errorElem = document.getElementById(
+                "checkout-error-message"
+              );
+              if (errorElem) errorElem.textContent = "";
               const idx = +e.target.getAttribute("data-idx");
               const file = e.target.files[0];
               if (file) {
@@ -850,22 +870,21 @@
         updateCartCount(); // <-- This ensures the cart count is correct on page load
       });
 
-      document
-        .querySelector(".btn.btn-primary.btn-lg.py-3.btn-block")
-        .addEventListener("click", function (e) {
+      const checkoutBtn = document.querySelector(
+        ".btn.btn-primary.btn-lg.py-3.px-5"
+      );
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener("click", function (e) {
           e.preventDefault();
           const cart = JSON.parse(localStorage.getItem("cart")) || [];
           let errorElem = document.getElementById("checkout-error-message");
           if (!errorElem) {
-            const btn = document.querySelector(
-              ".btn.btn-primary.btn-lg.py-3.btn-block"
-            );
             errorElem = document.createElement("div");
             errorElem.id = "checkout-error-message";
             errorElem.style.color = "#dc3545";
             errorElem.style.fontSize = "1em";
             errorElem.style.marginBottom = "10px";
-            btn.parentElement.insertBefore(errorElem, btn);
+            checkoutBtn.parentElement.insertBefore(errorElem, checkoutBtn);
           }
           errorElem.textContent = "";
           if (cart.length === 0) {
@@ -887,6 +906,7 @@
           document.getElementById("disclaimer-modal").style.display = "flex";
           document.body.style.overflow = "hidden";
         });
+      }
 
       // Disclaimer modal logic
       document
