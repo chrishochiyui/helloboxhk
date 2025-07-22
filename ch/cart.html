@@ -279,15 +279,15 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <label class="text-black h4" for="coupon">Coupon</label>
-                  <p>Enter your coupon code if you have one.</p>
+                  <label class="text-black h4" for="coupon"></label>
+                  <p>如有優惠碼，請輸入。</p>
                 </div>
                 <div class="col-md-8 mb-3 mb-md-0">
                   <input
                     type="text"
                     class="form-control py-3"
                     id="coupon"
-                    placeholder="Coupon Code"
+                    placeholder="優惠碼"
                   />
                 </div>
                 <div class="col-md-12 mb-2">
@@ -298,7 +298,7 @@
                 </div>
                 <div class="col-md-4">
                   <button class="btn btn-primary btn-sm" id="apply-coupon-btn">
-                    Apply Coupon
+                    使用優惠碼
                   </button>
                   <script></script>
                 </div>
@@ -309,7 +309,7 @@
                 <div class="col-md-7">
                   <div class="row">
                     <div class="col-md-12 text-right border-bottom mb-5">
-                      <h3 class="text-black h4 text-uppercase">Cart Total</h3>
+                      <h3 class="text-black h4 text-uppercase">總數：</h3>
                     </div>
                   </div>
                   <!-- <div class="row mb-3">
@@ -322,7 +322,7 @@
                   </div> -->
                   <div class="row mb-5">
                     <div class="col-md-6">
-                      <span class="text-black">Total</span>
+                      <!-- <span class="text-black">總數</span> -->
                     </div>
                     <div class="col-md-6 text-right">
                       <strong class="text-black" id="cart-total">$0.00</strong>
@@ -491,7 +491,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <button class="btn btn-primary btn-lg py-3 btn-block">
-                        Proceed To Checkout
+                        前往結帳
                       </button>
                     </div>
                   </div>
@@ -569,7 +569,7 @@
           }
           // Show loading effect
           msgLabel.innerHTML =
-            '<span style="display:inline-block;"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right:6px;"></span>Validating coupon...</span>';
+            '<span style="display:inline-block;"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right:6px;"></span>正在驗證優惠碼...</span>';
           msgLabel.style.color = "#007bff";
           try {
             const res = await fetch(
@@ -582,7 +582,7 @@
             );
             const data = await res.json();
             if (data.result && data.result.valid) {
-              msgLabel.textContent = `Coupon applied! Discount: $${data.result.discount}.`;
+              msgLabel.textContent = `已成功使用優惠碼！折扣：$${data.result.discount}`;
               msgLabel.style.color = "#28a745";
               window.couponDiscount = data.result.discount;
               window.couponValid = true;
@@ -602,8 +602,8 @@
             } else {
               msgLabel.textContent =
                 data.result && data.result.message
-                  ? data.result.message
-                  : "Invalid coupon code.";
+                  ? "優惠碼無效，請重新輸入。" //data.result.message
+                  : "優惠碼無效，請重新輸入。";
               msgLabel.style.color = "#dc3545";
               window.couponDiscount = null;
               window.couponValid = false;
@@ -672,7 +672,7 @@
                         <td colspan="3">
                           <table class="table table-bordered mb-2" style="background:#f9f9f9;">
                             <tr>
-                              <td style="width:120px; text-align:left;">Photo upload:</td>
+                              <td style="width:120px; text-align:left;">上載圖片:</td>
                               <td>
                                 <input type="file" accept="image/*" class="cart-photo-each" data-idx="${idx}" />
                                 <br />
@@ -694,7 +694,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <td style="text-align:left;">YouTube music link:</td>
+                              <td style="text-align:left;">預載音樂(選填):</td>
                               <td>
                                 <input type="url" class="form-control cart-youtube-each" placeholder="YouTube 連結" data-idx="${idx}" value="${
                 extras.youtube || ""
@@ -930,7 +930,7 @@
         document.getElementById("disclaimer-proceed").disabled = true;
         document.body.style.overflow = "";
 
-        const orderRef = "HB-" + new Date().getTime();
+        const orderRef = "HB-" + Math.floor(100000 + Math.random() * 900000);
         let message = `Hello 👋 我想訂購 HelloBox\n訂單編號：${orderRef}\n`;
 
         for (let i = 0; i < cart.length; i++) {
@@ -945,7 +945,7 @@
           message += `🎵 YouTube：${
             extras.youtube ? extras.youtube : "(未填)"
           }\n`;
-          message += `🎤 語音：請稍後WhatsApp語音\n`;
+          // message += `🎤 語音：請稍後WhatsApp語音\n`;
         }
 
         message += `\n`;
