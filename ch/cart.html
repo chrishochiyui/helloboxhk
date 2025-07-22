@@ -905,6 +905,8 @@
           // Show disclaimer modal and prevent background scroll
           document.getElementById("disclaimer-modal").style.display = "flex";
           document.body.style.overflow = "hidden";
+          document.body.style.position = "fixed";
+          document.body.style.width = "100%";
         });
       }
 
@@ -920,6 +922,8 @@
         document.getElementById("disclaimer-agree").checked = false;
         document.getElementById("disclaimer-proceed").disabled = true;
         document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.width = "";
       };
       document.getElementById("disclaimer-proceed").onclick = function () {
         // Actually proceed to WhatsApp checkout
@@ -949,6 +953,8 @@
         document.getElementById("disclaimer-agree").checked = false;
         document.getElementById("disclaimer-proceed").disabled = true;
         document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.width = "";
 
         const orderRef = "HB-" + Math.floor(100000 + Math.random() * 900000);
         let message = `Hello 👋 我想訂購 HelloBox\n訂單編號：${orderRef}\n`;
