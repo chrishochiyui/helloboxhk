@@ -685,29 +685,9 @@ Type-c 叉電線：20cm<br>
         document.getElementById("product-price").textContent =
           "$" + product.price;
 
-        // Read more effect
-        const maxLength = 80; // characters before "Read more" appears
-        if (product.desc.length > maxLength) {
-          const shortDesc = product.desc.slice(0, maxLength) + "...";
-          descElem.innerHTML = shortDesc;
-          readMoreLink.style.display = "inline";
-          let expanded = false;
-          readMoreLink.textContent = "👉Read more👈";
-          readMoreLink.onclick = function () {
-            if (!expanded) {
-              descElem.innerHTML = product.desc;
-              readMoreLink.textContent = "Show less";
-              expanded = true;
-            } else {
-              descElem.innerHTML = shortDesc;
-              readMoreLink.textContent = "👉Read more👈";
-              expanded = false;
-            }
-          };
-        } else {
-          descElem.innerHTML = product.desc;
-          if (readMoreLink) readMoreLink.style.display = "none";
-        }
+        // Always show full description by default
+        descElem.innerHTML = product.desc;
+        if (readMoreLink) readMoreLink.style.display = "none";
 
         let imgHtml = `
       <div class="swiper product-swiper">
